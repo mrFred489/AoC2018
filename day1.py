@@ -962,7 +962,7 @@ found = False
 
 res = 0
 
-seen = []
+seen = set()
 
 ins = [int(x) for x in inpu]
 
@@ -973,4 +973,4 @@ while not found:
             found = True
             print(res)
             break
-        seen.append(res)
+        seen.add(res)
