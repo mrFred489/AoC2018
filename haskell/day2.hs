@@ -34,9 +34,27 @@ part1 :: String -> (Int, Int) -- [Int]
 part1 inp = sumTwosThrees (0,0) (Data.List.map strToNums (lines inp))
 
 
+-- https://stackoverflow.com/questions/940382/what-is-the-difference-between-dot-and-dollar-sign
+{-
+list comprehension generating pairs with only one error
+
+l and r iterates over the lines in the input
+
+zip strings together so we get pairs of letters
+
+filter above list to get only the pairs that is not equal
+
+check if the length of the filtered list is 1
+
+https://www.reddit.com/r/adventofcode/comments/a2aimr/2018_day_2_solutions/eawjtx9/
+-}
+part2 :: [String] -> [(String, String)]
+part2 input = [(l, r) | l <- input, r <- input, (length . Data.List.filter (\(l,r) -> l /= r) $ Data.List.zip l r) == 1]
+
+
 main = do
   input <- readFile "../input2.txt"
-  print $ strToFreq input
-  print $ strToNums input
-  print $ part1 input
+  print $ Data.List.zip "1234" "1244"
+  print $ Data.List.filter (\(l,r) -> l /= r) [('1', '1'), ('1','2')]
   print $ ((fst (part1 input)) * (snd (part1 input)))
+  print $ part2 $ lines input
