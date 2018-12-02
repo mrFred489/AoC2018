@@ -27,11 +27,14 @@ for line in ids:
     for line2 in ids:
         if len(line) == len(line2):
             diffs = 0
-            for i in range(len(line)):
-                if line[i] != line2[i]:
+            for l1, l2 in zip(line, line2):
+                if l1 != l2:
                     diffs += 1
             if diffs == 1:
-                print(line, line2)
+                print(line.strip(), line2.strip())
+                print(''.join([x[0] for x in
+                               filter(lambda x: x[0] == x[1],
+                                      zip(line, line2))]))
                 breaking = True
                 break
     if breaking:
