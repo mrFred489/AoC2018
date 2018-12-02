@@ -18,15 +18,15 @@ myFilter val = case val of
 strToNums :: String -> [Int]
 strToNums inp = Data.List.filter myFilter (Data.List.nub (Data.List.map mySnd (strToFreq inp)))
 
+numIfElem :: Int -> [Int] -> Int
+numIfElem num xs = case (elem num xs) of
+  True -> 1
+  False -> 0
+
 sumTwosThrees :: (Int, Int) -> [[Int]] -> (Int, Int)
 sumTwosThrees acc xss =
       case xss of
-        (x:xs) -> case x of
-          [2]    -> sumTwosThrees ((fst acc) + 1, snd acc) xs
-          [3]    -> sumTwosThrees (fst acc, (snd acc) + 1) xs
-          [2, 3] -> sumTwosThrees ((fst acc) + 1, (snd acc) + 1) xs
-          [3,2] -> sumTwosThrees ((fst acc) + 1, (snd acc) + 1) xs
-          _      -> sumTwosThrees acc xs
+        (x:xs) -> sumTwosThrees ((fst acc) + (numIfElem 2 x), (snd acc) + (numIfElem 3 x)) xs
         _ -> acc
 
 
