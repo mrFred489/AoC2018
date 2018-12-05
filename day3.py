@@ -48,5 +48,5 @@ for line in lines:
     if not checkRegion(counter, matrix, x1, y1, x2, y2, line[0]):
         print(line[0])
 
-    
+
 print(counter)
