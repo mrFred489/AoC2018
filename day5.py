@@ -21,7 +21,7 @@ for l, u in zip(s.ascii_lowercase, s.ascii_uppercase):
     while old != new:
         old = new
         new = reduce(new)
-    lens.append((len(new), l, new))
+    lens.append((len(new), l))
 
 print(min(lens))
 
