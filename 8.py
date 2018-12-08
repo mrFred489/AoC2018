@@ -9,6 +9,21 @@ f = open("8.txt").read().split()
 
 f = [int(x)for x in f]
 
+def getChildPart1(inp):
+    cs, ms = inp[:2]
+    # print(cs, ms)
+    inp = inp[2:]
+    total = 0
+    for i in range(cs):
+        inp, acc = getChildPart1(inp)
+        total += acc
+    for i in range(ms):
+        total += inp[i]
+    return inp[ms:], total
+
+
+
+
 def getChild(inp):
     cs, ms = inp[:2]
     # print(cs, ms)
@@ -34,5 +49,7 @@ def getChild(inp):
                 # print("adding", i)
                 total += children_data[i-1]
     return inp[ms:], total, ms_sum
+
+print(getChildPart1(f))
 
 print(getChild(f))
