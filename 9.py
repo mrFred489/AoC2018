@@ -12,6 +12,34 @@ marbles = int(f[-2])
 # marbles = 1618
 print(players, marbles)
 
+def part1():
+    table = [0]
+
+    cm = 0
+    
+    scores = defaultdict(int)
+
+    player = 0
+
+    for i in range(1, marbles):
+        if i % 23 == 0:
+            cm = cm - 7
+            if cm < 0:
+                cm = len(table) + cm
+            scores[player] += i + table[cm]
+            # print(player, i, table[cm])
+            del table[cm]
+        else:
+            cm += 2
+            cm %= len(table)
+            table.insert(cm, i)
+        # print(table[cm], table)
+
+        player += 1
+        player %= players
+
+    print(max(scores.values()))
+
 
 scores = defaultdict(int)
 
