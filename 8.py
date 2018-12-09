@@ -5,7 +5,7 @@ import sys
 
 f = open("8.txt").read().split()
 
-#f = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2".split()
+# f = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2".split()
 
 f = [int(x)for x in f]
 
@@ -45,9 +45,7 @@ def getChild(inp):
         total = ms_sum
     else:
         for i in mss:
-            if i <= cs:
-                # print("adding", i)
-                total += children_data[i-1]
+            total += children_data[i-1]
     return inp[ms:], total, ms_sum
 
 print(getChildPart1(f))
