@@ -38,8 +38,9 @@ def part1():
         player += 1
         player %= players
 
-    print(max(scores.values()))
+    print("part1", max(scores.values()))
 
+part1()
 
 scores = defaultdict(int)
 
