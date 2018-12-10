@@ -10,6 +10,7 @@ if [ ! -f "$1.py" ]; then
 import itertools
 import random
 import sys
+import re
 
 f = open(\"$1.txt\").read().split(\"\n\")" > "$1.py"
     git add "$1.py"
