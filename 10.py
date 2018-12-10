@@ -2,6 +2,7 @@ from collections import *
 import itertools
 import random
 import sys
+import re
 
 f = open("10.txt").read().split("\n")
 
@@ -10,11 +11,7 @@ inp = []
 for line in f:
     if line == "":
         break
-    line = line.replace(">", "<").split("<")
-    x, y = line[1].split(",")
-    dx, dy = line[3].split(",")
-    x, y = (int(x), int(y))
-    dx, dy = (int(dx), int(dy))
+    x, y, dx, dy = map(int, re.findall("-?\d+", line))
     inp.append((x, y, dx, dy))
 
 out = [[" "]*200 for _ in range(200)]
@@ -27,16 +24,14 @@ def print_map(m):
         print(''.join(line))
 
 
-size = len(" 000 0  0        000    000000  000000  000000  000000  0    0")//2 +5
-        
+size = len(" 000 0  0        000    000000  000000  000000  000000  0    0") // 2 + 5
+
 count = 0
 while True:
     x_lo = 10e5
     x_hi = -10e5
     y_lo = 10e5
     y_hi = -10e5
-    inside = True
-    changed = False
     for i, (x, y, dx, dy) in enumerate(inp):
         x, y = (x + dx, y + dy)
         inp[i] = (x, y, dx, dy)
@@ -57,7 +52,7 @@ while True:
             changed = True
         else:
             inside = False
-        print(count)
+        print(count+1)
         print_map(m)
         input()
     count += 1
