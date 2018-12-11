@@ -3,6 +3,8 @@ import itertools
 import random
 import sys
 import re
+import time
+start = time.time()
 
 f = open("11.txt").read().split("\n")
 
@@ -36,14 +38,16 @@ vals = []
 
 for y in range(300):
     for x in range(300):
+        prev = 0
         for size in range(300):
             if y < 300-size-1 and x < 300-size-1:
-                check = 0
-                for i in range(size):
-                    check += sum(m[y+i][x:x+size])
-                vals.append((check, x, y, size))
+                for i in range(size-1):
+                    prev += m[y+i][x+size-1]
+                prev += sum(m[y+size-1][x:x+size])
+                vals.append((prev, x+1, y+1, size))
     if y % 10 == 0:
         print(y)
 
 
 print(max(vals))
+print(time.time() - start)
