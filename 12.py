@@ -58,4 +58,6 @@ for i in range(gs):
         mapping[old] = new
         last_seen[old] = (i, index0)
     old = new
+    if i == 19:
+        print(sum([i - index0 for i in range(len(old)) if old[i] == "#"]))
 
