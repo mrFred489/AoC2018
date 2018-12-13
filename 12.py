@@ -21,8 +21,10 @@ for inp in f[2:]:
     spl = inp.split(" => ")
     mapping[spl[0]] = spl[1]
 
-def get_res(val):
+
+def get_res(val, index0):
     return sum([x-index0 for x in range(len(val)) if val[x] == "#"])
+
 
 old = init
 counter = 0
@@ -44,9 +46,9 @@ for i in range(gs):
     new = old
     if new in seen:
         di, didx = last_seen[old]
-        val1 = get_res(indicies[di+1][1]) - get_res(indicies[di][1])
+        val1 = get_res(indicies[di+1][1], index0) - get_res(indicies[di][1], index0)
         rest = gs-(i+1)
-        print("result", get_res(new) + val1*rest)
+        print("result", get_res(new, index0) + val1*rest)
         break
     else:
         for idx in range(2, len(old)-2):
