@@ -5,7 +5,7 @@ import sys
 import re
 
 f = open("13.txt").read().split("\n")
-# f = open("13.2.example").read().split("\n")
+# f = open("13.example").read().split("\n")
 
 moves = ["l", "s", "r"]
 
@@ -35,80 +35,121 @@ turn = {
     ("v", "\\"): ">",
 }
 
-def print_map(m, carts, cart_locations):
+def locations(carts):
+    return [(c.y, c.x) for c in carts]
+
+def print_map(m, carts):
     res = ""
+    cart_locations = locations(carts)
     for y, line in enumerate(m):
+        res += "0" * (3-len(str(y))) + str(y)
         for x, c in enumerate(line):
             if ((y, x)) in cart_locations:
                 # c = ["{},{},{}".format(x, y, c) for ny, nx, c, _ in carts if ny == y and nx == x][0]
-                c = [c for ny, nx, c, _ in carts if ny == y and nx == x][0]
+                c = [c.direction for c in carts if c.y == y and c.x == x][0]
             res += c
         res += "\n"
     print(res)
-                
+
 
 m = []
 carts = []
 
+class Cart(object):
+    def __init__(self, x, y, direction):
+        self.direction = direction
+        self.x = x
+        self.y = y
+        self.n = 0
+        self.crashed = False
+
+    def intersection(self):
+        move = moves[self.n%3]
+        # print(self.n, self.direction, move)
+        if move != "s":
+            # print(turn[(self.direction, move)])
+            self.direction = turn[(self.direction, move)]
+        self.n += 1
+        
+    def corner(self, c):
+        self.direction = turn[(self.direction, c)]
+        
+    def __lt__(self, other):
+        if self.y == other.y:
+            return self.x < other.x
+        return self.y < other.y
+     
+    def __str__(self):
+        return "Car(x: {}, y: {}, direction: {})".format(self.x, self.y, self.direction)
+
+    def __repr__(self):
+        return "Car(x: {}, y: {}, direction: {})".format(self.x, self.y, self.direction)
+
+def get_cart_with_coord(carts, x, y):
+    ret = []
+    for c in carts:
+        if c.x == x and c.y == y:
+            ret.append(c)
+    return ret
+
 for y, line in enumerate(f):
-    c_locs = [(y, i, x, 0) for i, x in enumerate(line) if x in ["<",">","^","v"]]
-    carts += c_locs
+    carts += [Cart(i, y, x) for i, x in enumerate(line) if x in ["<",">","^","v"]]
     line = line.replace(">", "-")
     line = line.replace("<", "-")
     line = line.replace("^", "|")
     line = line.replace("v", "|")
     m.append(line)
 
-cart_locations = [(y, x) for y,x,_,_ in carts]
+cart_locations = locations(carts)
 print(len(cart_locations))
 crash = False
 iteration = 0
-print_map(m, carts, cart_locations)
-while not crash and len(carts) > 0:
+print_map(m, carts)
+prev_len = len(carts)
+crashed = []
+print(sorted(carts))
+print("started")
+while not crash and len(carts) > 1:
     carts.sort()
-    new_carts = []
-    new_cart_locations = []
-    to_remove = []
     # print(iteration, carts)
-    for oy, ox, c, n in carts:
-        if (oy,ox) in to_remove:
+    for c in carts:
+        if c.crashed:
             continue
-        dx, dy = directions[c]
-        x = ox + dx
-        y = oy + dy
-        if m[y][x] == "+":
-            mov = moves[n%3]
-            if mov != "s":
-                c = turn[(c, mov)]
-            n += 1
-        if m[y][x] in ["/", "\\"]:
+        dx, dy = directions[c.direction]
+        # print(iteration, c, dx, dy)
+        c.x += dx
+        c.y += dy
+        if m[c.y][c.x] == "+":
+            # print("intersection at {},{}".format(c.x, c.y))
+            c.intersection()
+        elif m[c.y][c.x] in ["/", "\\"]:
+            c.corner(m[c.y][c.x])
             # print(iteration, "turning corner", m[y][x], x, y)
-            c = turn[(c,m[y][x])]
         # print(c)
-        if (y, x) in cart_locations or (y,x) in new_cart_locations:
-            print(iteration, "first crash at", "{},{}".format(x,y))
+        # print(c, locations([oc for oc in carts if oc != c]))
+        if (c.y, c.x) in locations([oc for oc in carts if oc != c and not oc.crashed]):
+            print(iteration, "first crash at", "{},{}".format(c.x,c.y))
             # print_map(m, carts, cart_locations)
-            carts = [(ny, nx, c, n) for ny, nx, c, n in carts
-                     if not ((y == ny and x == nx) or (oy == ny and ox == nx))]
-            print(len(cart_locations)-1)
-            to_remove.append((y,x))
-            # crash = True
-            # break
-        else:
-            new_carts.append((y, x, c, n))
-            new_cart_locations.append((y, x))
-    if to_remove != []:
-        old_len = len(new_carts)
-        new_carts = [(y, x, c, n) for y, x, c, n in new_carts if (y,x) not in to_remove]
-        if len(new_carts) == 1:
-            y, x, c, n = new_carts[0]
-            new_cart_locations = [(y, x) for y,x,_,_ in new_carts]
-            print_map(m, new_carts, new_cart_locations)
-            print( "{},{}".format(x,y))
-            print(new_carts)
-            break
-    carts = new_carts
-    cart_locations = [(y, x) for y,x,_,_ in carts]
+            to_remove = get_cart_with_coord(carts, c.x, c.y)
+            old_len = len(carts)
+            for cr in to_remove:
+                cr.crashed = True
+                print("removing", cr)
+            print(old_len, len(carts))
+            
+    # if to_remove != []:
+    #     old_len = len(new_carts)
+    #     new_carts = [(y, x, c, n) for y, x, c, n in new_carts if (y,x) not in to_remove]
+    #     print("removeing", old_len, len(new_carts))
+    #     if len(new_carts) == 1:
+    #         y, x, c, n = new_carts[0]
+    #         new_cart_locations = [(y, x) for y,x,_,_ in new_carts]
+    #         print_map(m, new_carts, new_cart_locations)
+    #         print( "{},{}".format(x,y))
+    #         print(new_carts)
+    #         break
+    # carts = new_carts
+    # cart_locations = [(y, x) for y,x,_,_ in carts]
     # count = Counter(cart_locations)
     # if set(count.values()) != {1}:
     #     print("count")
@@ -129,6 +170,18 @@ while not crash and len(carts) > 0:
     #     break
     # if iteration > 6460:
     #     print_map(m, carts, cart_locations)
+    # if len(carts) != prev_len:
+    #     print(iteration, "new len", len(carts))
+    #     prev_len = len(carts)
+    carts = [c for c in carts if not c.crashed]
+    if len(carts) == 1:
+        c = carts[0]
+        print("result: {},{}".format(c.x, c.y))
+        crash = True
+        break
+    # if 115 < iteration < 119:
+    #     print_map(m, carts)
+    #     input()
     iteration += 1
 
 print(iteration)
