@@ -194,6 +194,8 @@ while solving:
         # print(rounds)
         # input()
         rounds += 1
+    if part1:
+        break
     ap_elves += 1
     print(ap_elves)
 
