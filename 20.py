@@ -14,13 +14,9 @@ d = {
 }
 
 positions = []
-x, y = 5000, 5000
-m = defaultdict(set)
-prev_x, prev_y = x, y
+prev_x, prev_y = x, y = 0, 0
 distances = defaultdict(int)
-dist = 0
 for c in f[1:-1]:
-    print(c, len(positions))
     if c == "(":
         positions.append((x, y))
     elif c == ")":
@@ -31,16 +27,10 @@ for c in f[1:-1]:
         dx, dy = d[c]
         x += dx
         y += dy
-        m[(x, y)].add((prev_x, prev_y))
         if distances[(x, y)] != 0:
             distances[(x, y)] = min(distances[(x, y)], distances[(prev_x, prev_y)]+1)
         else:
             distances[(x, y)] = distances[(prev_x, prev_y)]+1
-        
-        
-    
-
-
     prev_x, prev_y = x, y
 
 print(max(distances.values()))
