@@ -145,7 +145,7 @@ for y in range(miny, maxy+1):
         else:
             res += "."
     res += "\n"
-print(res)
+# print(res)
 # print(miny, maxy)
 # print("still", sorted([(y, x) for x, y in still_water]))
 # print("water", sorted([(y, x) for x, y in water_coords]))

@@ -60,9 +60,8 @@ while i < 1000000000:
         if seen_once and ''.join(m) == seen_original and not seen_twice:
             seen_twice = True
             step = i - seen_time
-            while step + i <= 1000000000:
-                i += step
-            print("final i", i)
+            val = (1000000000 - i) // step
+            i += val * step
         seen.add(''.join(m))
     if i % 100 == 0:
         lumberyards = 0
