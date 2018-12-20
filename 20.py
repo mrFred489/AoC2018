@@ -6,9 +6,6 @@ import re
 
 f = open("20.txt").read().strip("\n")
 
-room = "."
-wall = "#"
-door = "-|"
 d = {
     "N": (0, -1),
     "E": (1, 0),
