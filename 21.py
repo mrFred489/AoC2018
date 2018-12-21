@@ -87,13 +87,8 @@ def eqrr(reg, a, b, c):
     return reg
 
 
-
-
-
 functions = [addr, addi, mulr, muli, banr, bani, borr, bori, setr, seti, gtir, gtri, gtrr, eqir, eqri, eqrr]
 functions_index = ["addr", "addi", "mulr", "muli", "banr", "bani", "borr", "bori", "setr", "seti", "gtir", "gtri", "gtrr", "eqir", "eqri", "eqrr"]
-
-ip = 0
 
 ip_reg = int(re.findall("\d", f[0])[0])
 print("ip_reg", ip_reg)
@@ -107,7 +102,7 @@ for line in f[1:]:
 
 found_it = False
 loop_val = 1e10
-testing = True
+testing = False
 reg1s = set()
 ip = 0
 registers = [0 for _ in range(6)]
@@ -131,14 +126,9 @@ while True:
             print("part 1", registers[1])
             break
         if registers[1] in reg1s:
-            print(prev_reg1)
-            print("done")
+            print("part 2", prev_reg1)
             break
         else:
             reg1s.add(registers[1])
             prev_reg1 = registers[1]
-    # if i % 10000000 == 0:
-    #     print(i, ip, registers)
     i += 1
-# 16704546
-            
