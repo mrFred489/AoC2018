@@ -105,14 +105,12 @@ for line in f[1:]:
     line = line.split(" ")
     instructions.append((functions[functions_index.index(line[0])], int(line[1]), int(line[2]), int(line[3])))
 
-start_val = 5970143
 found_it = False
 loop_val = 1e10
 testing = True
 reg1s = set()
 ip = 0
 registers = [0 for _ in range(6)]
-registers[0] = start_val
 i = 0
 part1 = False
 prev_reg1 = 0
@@ -120,7 +118,9 @@ while True:
     func, a, b, c = instructions[ip]
     if testing:
         print(ip, func.__name__, registers)
-        if i > 200:
+        if registers[5] != 65536:
+            print(registers)
+        if registers[5] > 65536:
             found_it = True
             break
     registers = func(registers, a, b, c)
@@ -128,7 +128,7 @@ while True:
     ip = registers[ip_reg]
     if ip == 28:
         if part1:
-            print(register[1])
+            print("part 1", registers[1])
             break
         if registers[1] in reg1s:
             print(prev_reg1)
@@ -137,9 +137,8 @@ while True:
         else:
             reg1s.add(registers[1])
             prev_reg1 = registers[1]
-    if i % 10000000 == 0:
-        print(i, ip, registers)
+    # if i % 10000000 == 0:
+    #     print(i, ip, registers)
     i += 1
 # 16704546
             
-print(start_val)
