@@ -1,0 +1,29 @@
+
+
+
+
+
+
+reg5 = reg1 or 65536
+reg1 = 8586263
+reg2 = reg5 & 255
+reg1 += reg2
+reg1 &= 16777215
+reg1 *=65899
+reg1 &= 16777215
+if 256 > reg5: ip = 28
+else: continue to the following
+
+
+reg2 = 0
+reg3 = reg2 + 1
+reg3 *= 256
+reg3 = reg3 > reg5
+if reg3 * 256 > reg5: ip = 26
+else: reg2 += 1; ip = 18
+
+
+
+reg5 = reg2
+ip = 8
+if reg1 == reg0: break

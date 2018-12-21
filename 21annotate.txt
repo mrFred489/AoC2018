@@ -1,0 +1,31 @@
+0 seti 123 0 1 # reg[1] = 123
+1 bani 1 456 1 # reg[1] = reg[1] & 456
+2 eqri 1 72 1 # reg[1] = reg[1] == 72
+3 addr 1 4 4 # ip = ip + reg[1]
+4 seti 0 0 4 # ip = 0   - INFINITE LOOP
+5 seti 0 3 1 # reg[1] = 0
+6 bori 1 65536 5 # reg[5] = reg[1] | 65536
+7 seti 8586263 3 1 # reg[1] = 8586263
+8 bani 5 255 2 # reg[2] = reg[5] & 255
+9 addr 1 2 1 # reg[1] = reg[1] + reg[2]
+10 bani 1 16777215 1 # reg[1] = reg[1] & 16777215
+11 muli 1 65899 1 # reg[1] = 65899 * reg[1]
+12 bani 1 16777215 1 # reg[1] = 16777215 * reg[1]
+13 gtir 256 5 2 # reg[2] = 256 > reg[5]
+14 addr 2 4 4 # ip = reg[2] + ip
+15 addi 4 1 4 # ip = ip + 1
+16 seti 27 8 4 # ip = 27
+17 seti 0 1 2 # reg[2] = 0
+18 addi 2 1 3 # reg[3] = reg[2] + 1
+19 muli 3 256 3 # reg[3] = reg[3] * 256
+20 gtrr 3 5 3 # reg[3] = reg[3] > reg[5]
+21 addr 3 4 4 # ip = ip + reg[3]
+22 addi 4 1 4 # ip = ip + 1
+23 seti 25 8 4 # ip = 25
+24 addi 2 1 2 # reg[2] = reg[2] + 1
+25 seti 17 7 4 # ip = 17
+26 setr 2 0 5 # reg[5] = reg[2]
+27 seti 7 8 4 # ip = 7
+28 eqrr 1 0 2 # reg[2] = reg[1] == reg[0]
+29 addr 2 4 4 # ip = ip + reg[2]
+30 seti 5 4 4 # ip = 5
