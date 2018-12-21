@@ -8,6 +8,7 @@ reg5 = 0
 reg1s = []
 prev_reg1 = 0
 print(reg1, reg2, reg3, reg4, reg5)
+part1 = False
 while True:
     if starting:
         reg5 = reg1 | 65536
@@ -18,16 +19,19 @@ while True:
     reg1 &= 16777215
     reg1 *= 65899
     reg1 &= 16777215
-    print("line 20", reg1, reg2, reg3, reg4, reg5)
+    # print("line 20", reg1, reg2, reg3, reg4, reg5)
     if 256 > reg5:
-        print(reg1, reg2, reg3, reg4, reg5)
+        # print(reg1, reg2, reg3, reg4, reg5)
         # jump to ip=28
+        if part1:
+            print(reg1)
+            break
         if reg1 in reg1s:
-            print(reg1s[-5:],
-                  reg1,
-                  reg1s[reg1s.index(reg1)-1],
-                  reg1s[reg1s.index(reg1)-3: reg1s.index(reg1)+3])
-            print("done", prev_reg1)
+            # print(reg1s[-5:],
+            #       reg1,
+            #       reg1s[reg1s.index(reg1)-1],
+            #       reg1s[reg1s.index(reg1)-3: reg1s.index(reg1)+3])
+            print("part2", prev_reg1)
             break
         else:
             prev_reg1 = reg1
@@ -38,9 +42,10 @@ while True:
             starting = True
             continue
     reg2 = 0  # ip = 17
-    while not reg3 > reg5:
+    been_there = False
+    while not reg3 > reg5 or not been_there:
         # print("line 35", reg1, reg2, reg3, reg4, reg5)
-
+        been_there = True
         reg3 = reg2 + 1
         reg3 *= 256
         reg2 += 1
